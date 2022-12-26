@@ -10,6 +10,7 @@ const StyledButton = styled.button`
 	border: 0;
 	max-width: 150px;
 	border-radius: 16px;
+	cursor: pointer;
 `;
 
 function ButtonBasic({

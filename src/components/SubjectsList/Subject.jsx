@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import ProgressBar from "../UI/ProgressBar";
 
 const StyledSubject = styled.div`
 	width: 450px;
@@ -32,20 +33,6 @@ const SubjectProgress = styled.div`
 	color: ${(props) => props.theme.textGray};
 	align-items: center;
 	gap: 8px;
-`;
-
-const SubjectProgressBar = styled.div`
-  width: 100px;
-  height: 7px;
-	overflow: hidden;
-	border-radius: 8px;
-  background-color: ${(props) => props.theme.cardSecondary[props.color]}};
-`;
-
-const SubjectProgressComplete = styled.div`
-	width: ${(props) => props.progress + "%"};
-	height: 7px;
-	background-color: ${(props) => props.theme.cardPrimary[props.color]};
 `;
 
 const SubjectInfo = styled.p`
@@ -85,9 +72,7 @@ function Subject({
 			<SubjectTitle>{name}</SubjectTitle>
 			<SubjectProgress>
 				Мой прогресс
-				<SubjectProgressBar color={color}>
-					<SubjectProgressComplete color={color} progress={progress} />
-				</SubjectProgressBar>
+				<ProgressBar color={color} max={100} current={progress} />
 			</SubjectProgress>
 			<SubjectInfo>
 				{nextLesson !== undefined ? (
