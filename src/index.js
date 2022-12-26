@@ -31,6 +31,20 @@ const Theme = {
 	cardBg: {
 		orange: "#FFFCF4",
 		green: "#DBFFD6",
+		blue: "#B1ECFF",
+		red: "#FFB1B1",
+	},
+	cardPrimary: {
+		orange: "#FFA800",
+		green: "#00FF19",
+		blue: "#00D1FF",
+		red: "#FF0000",
+	},
+	cardSecondary: {
+		orange: "#FFE08D",
+		green: "#72C17A",
+		blue: "#72AEC1",
+		red: "#FFB1B1",
 	},
 };
 
