@@ -72,7 +72,9 @@ function SubjectLesson({
 			</LessonHeader>
 			<LessonTopic>{name}</LessonTopic>
 			{skills.map((skill) => (
-				<LessonSkill color={skill.color}>{skill.name}</LessonSkill>
+				<LessonSkill key={skill.id} color={skill.color}>
+					{skill.name}
+				</LessonSkill>
 			))}
 		</StyledLesson>
 	);

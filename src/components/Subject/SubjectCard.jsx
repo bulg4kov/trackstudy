@@ -111,6 +111,7 @@ function SubjectCard({ subject, ...props }) {
 						{subject.lessons.map((lesson) =>
 							lesson.status === "waiting" ? (
 								<SubjectLesson
+									key={lesson.id}
 									name={lesson.topic}
 									lessonId={lesson.id}
 									skills={lesson.skills}
