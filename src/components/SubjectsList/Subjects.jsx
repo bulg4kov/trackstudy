@@ -4,7 +4,10 @@ import ButtonBasic from "../UI/Buttons/ButtonBasic";
 import { createSelector } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import Subject from "./Subject";
-import { changeCurrentSubject } from "../../app/slices/appSlice";
+import {
+	changeCurrentStatus,
+	changeCurrentSubject,
+} from "../../app/slices/appSlice";
 
 const SubjectsSection = styled.section`
 	display: flex;
@@ -45,6 +48,7 @@ function Subjects() {
 
 	const onSubjectClick = (e, subjectId) => {
 		dispatch(changeCurrentSubject({ newId: subjectId }));
+		dispatch(changeCurrentStatus("view"));
 	};
 
 	return (

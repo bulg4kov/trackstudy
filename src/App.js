@@ -3,13 +3,13 @@ import "./App.css";
 import styled from "styled-components";
 import Header from "./components/Header/Header";
 import Subjects from "./components/SubjectsList/Subjects";
-import SubjectCard from "./components/Subject/SubjectCard";
 import { useSelector } from "react-redux";
 import { createSelector } from "@reduxjs/toolkit";
+import SubjectCardEdit from "./components/Subject/SubjectCardEdit";
+import SubjectCard from "./components/Subject/SubjectCard";
 
 const StyledApp = styled.main`
 	width: 1440px;
-	height: 100%;
 `;
 
 const StyledContainer = styled.div`
@@ -21,7 +21,7 @@ const StyledContainer = styled.div`
 
 const selectSubjectById = createSelector(
 	[(state) => state.subjects, (state, id) => id],
-	(subjects, id) => subjects.filter((subject) => subject.id == id)[0]
+	(subjects, id) => subjects.filter((subject) => subject.id === id)[0]
 );
 
 function App() {
@@ -31,12 +31,17 @@ function App() {
 		selectSubjectById(state, currentSubjectId)
 	);
 
+	const appState = useSelector((state) => state.app);
+
 	return (
 		<StyledApp>
 			<Header />
 			<StyledContainer>
 				<Subjects />
-				{currentSubject !== undefined ? (
+				{appState.currentStatus === "edit" && currentSubject !== undefined ? (
+					<SubjectCardEdit subject={currentSubject} />
+				) : appState.currentStatus === "view" &&
+				  currentSubject !== undefined ? (
 					<SubjectCard subject={currentSubject} />
 				) : null}
 			</StyledContainer>

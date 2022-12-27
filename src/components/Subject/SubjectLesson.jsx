@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { SubjectSubAction } from "./SubjectSubAction";
 
 const StyledLesson = styled.div`
 	display: flex;
@@ -22,17 +23,6 @@ const LessonHeader = styled.div`
 const LessonActions = styled.div`
 	display: flex;
 	gap: 16px;
-`;
-
-const LessonAction = styled.button`
-	font-size: 16px;
-	font-weight: 400;
-	background-color: unset;
-	border: none;
-	color: ${(props) =>
-		props.type === "complete"
-			? props.theme.cardPrimary.green
-			: props.theme.cardPrimary.red};
 `;
 
 const LessonTopic = styled.span`
@@ -63,12 +53,12 @@ function SubjectLesson({
 					day: "numeric",
 				})}
 				<LessonActions>
-					<LessonAction type="complete" onClick={onComplete}>
+					<SubjectSubAction type="complete" onClick={onComplete}>
 						+
-					</LessonAction>
-					<LessonAction type="fail" onClick={onFail}>
+					</SubjectSubAction>
+					<SubjectSubAction type="fail" onClick={onFail}>
 						-
-					</LessonAction>
+					</SubjectSubAction>
 				</LessonActions>
 			</LessonHeader>
 			<LessonTopic>{name}</LessonTopic>

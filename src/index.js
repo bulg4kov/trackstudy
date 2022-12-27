@@ -15,10 +15,14 @@ const GlobalStyle = createGlobalStyle`
 		padding: 0;
     font-family: Roboto;
 	}
+	html{
+		width: 100%;
+	}
 	body{
-		display: flex;
-		justify-content: center;
+		width: 1440px;
 		padding: 16px;
+		box-sizing: border-box;
+		margin: 0 auto
 	}
 `;
 
