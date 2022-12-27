@@ -50,6 +50,7 @@ function SubjectLesson({
 	time = new Date(),
 	name = "",
 	skills = [],
+	skillsUsed = [],
 	onComplete,
 	onFail,
 	...props
@@ -71,9 +72,9 @@ function SubjectLesson({
 				</LessonActions>
 			</LessonHeader>
 			<LessonTopic>{name}</LessonTopic>
-			{skills.map((skill) => (
-				<LessonSkill key={skill.id} color={skill.color}>
-					{skill.name}
+			{skillsUsed.map((skillUsed) => (
+				<LessonSkill key={skillUsed} color={skills[skillUsed].color}>
+					{skills[skillUsed].name}
 				</LessonSkill>
 			))}
 		</StyledLesson>

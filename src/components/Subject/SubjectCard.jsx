@@ -114,7 +114,8 @@ function SubjectCard({ subject, ...props }) {
 									key={lesson.id}
 									name={lesson.topic}
 									lessonId={lesson.id}
-									skills={lesson.skills}
+									skillsUsed={lesson.skills}
+									skills={subject.skills}
 									time={new Date(lesson.time * 1000)}
 								/>
 							) : null

@@ -11,44 +11,21 @@
         "time": "1672101138",
         "topic": "useContext",
         "status": "waiting",
-        "skills": [
-          {
-            "id": 0,
-            "name": "Теоретическая база",
-            "color": "green"
-          },
-          {
-            "id": 1,
-            "name": "Практика",
-            "color": "blue"
-          }
-        ]
+        "skills": [0, 1]
       },
       {
         "id": 1,
         "time": "1670151138",
         "topic": "useState",
         "status": "competed",
-        "skills": [
-          {
-            "id": 0,
-            "name": "Теоретическая база",
-            "color": "green"
-          }
-        ]
+        "skills": [0, 1]
       },
       {
         "id": 2,
         "time": "1670051138",
         "topic": "useEffect",
         "status": "failed",
-        "skills": [
-          {
-            "id": 0,
-            "name": "Теоретическая база",
-            "color": "green"
-          }
-        ]
+        "skills": [0, 1]
       }
     ],
     "skills": [
@@ -85,13 +62,7 @@
         "time": "1672101138",
         "topic": "Начало чтения документации vue.js",
         "status": "waiting",
-        "skills": [
-          {
-            "id": 0,
-            "name": "Теоретическая база",
-            "color": "green"
-          }
-        ]
+        "skills": [0, 2]
       }
     ],
     "skills": [
