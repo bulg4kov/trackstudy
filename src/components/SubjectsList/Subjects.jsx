@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import ButtonBasic from "../UI/Buttons/ButtonBasic";
 import { createSelector } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Subject from "./Subject";
+import { changeCurrentSubject } from "../../app/slices/appSlice";
 
 const SubjectsSection = styled.section`
 	display: flex;
@@ -38,8 +39,13 @@ const getSubjects = createSelector(
 		}))
 );
 
-function Subjects(props) {
+function Subjects() {
 	const subjects = useSelector((state) => getSubjects(state));
+	const dispatch = useDispatch();
+
+	const onSubjectClick = (e, subjectId) => {
+		dispatch(changeCurrentSubject({ newId: subjectId }));
+	};
 
 	return (
 		<SubjectsSection>
@@ -50,11 +56,13 @@ function Subjects(props) {
 			<SubjectsList>
 				{subjects.map((subject) => (
 					<Subject
+						subjectId={subject.id}
 						color={subject.color}
 						name={subject.name}
-						progress={subject.totalSkill}
+						progress={subject.skill}
 						nextLesson={new Date(subject.lesson.time * 1000)}
 						topic={subject.lesson.topic}
+						onClick={onSubjectClick}
 						key={subject.id}
 					/>
 				))}

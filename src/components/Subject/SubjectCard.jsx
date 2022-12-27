@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import ButtonBasic from "../UI/Buttons/ButtonBasic";
 import SubjectSkill from "./SubjectSkill";
+import SubjectData from "./SubjectData";
 
 const Subject = styled.article`
 	display: flex;
@@ -11,7 +12,11 @@ const Subject = styled.article`
 `;
 
 const SubjectContainer = styled.div`
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	grid-auto-flow: column;
+	gap: 24px;
 	justify-content: space-between;
 `;
 
@@ -43,41 +48,69 @@ const SubjectDescription = styled.p`
 	width: 450px;
 `;
 
-const SubjectSkills = styled.div`
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
+const SubjectMaterial = styled.span`
+	font-size: 16px;
+	font-weight: 400;
+	color: ${(props) =>
+		props.as === "a" ? props.theme.link : props.theme.textPrimary};
 `;
 
-function SubjectCard(props) {
+const urlRegex =
+	/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
+function SubjectCard({ subject, ...props }) {
 	return (
 		<section>
 			<Subject>
 				<SubjectHeader>
 					<SubjectTitle>
-						<h3 className="TabTitle">ReactJS</h3>
-						<SubjectColor color={"orange"}>
+						<h3 className="TabTitle">{subject.name}</h3>
+						<SubjectColor color={subject.color}>
 							цвет: <div></div>
 						</SubjectColor>
 					</SubjectTitle>
 					<ButtonBasic title="Редактировать" />
 				</SubjectHeader>
-				<SubjectDescription>
-					Изучение фреймворка для JavaScript - ReactJS 16+ версии с хуками,
-					функциональные компоненты
-				</SubjectDescription>
+				<SubjectDescription>{subject.description}</SubjectDescription>
 				<SubjectContainer>
-					<SubjectSkills>
-						<span className="ColumnTitle">Мои навыки</span>
-						<SubjectSkill name="Общий прогресс" color="orange" progress={67} />
+					<SubjectData title={"Мои навыки"}>
 						<SubjectSkill
-							name="Теоретичская база"
-							color="green"
-							progress={90}
+							name="Общий прогресс"
+							color={subject.color}
+							progress={subject.totalSkill}
 						/>
-						<SubjectSkill name="Практика" color="blue" progress={50} />
-						<SubjectSkill name="Библиотеки" color="red" progress={22} />
-					</SubjectSkills>
+						{subject.skills.map((skill) => (
+							<SubjectSkill
+								key={skill.id}
+								name={skill.name}
+								color={skill.color}
+								progress={skill.progress}
+							/>
+						))}
+					</SubjectData>
+
+					<SubjectData
+						title={"Учебники и материалы"}
+						addAction={function () {}}
+					>
+						{subject.materials.map((material, index) =>
+							urlRegex.test(material) ? (
+								<SubjectMaterial as="a" key={index} href={material}>
+									{material}
+								</SubjectMaterial>
+							) : (
+								<SubjectMaterial key={index}>{material}</SubjectMaterial>
+							)
+						)}
+					</SubjectData>
+					<SubjectData
+						alignRight
+						title={"Мои занятия"}
+						addAction={function () {}}
+					>
+						{subject.lessons.map((lesson) =>
+							lesson.status === "waiting" ? lesson.topic : null
+						)}
+					</SubjectData>
 				</SubjectContainer>
 			</Subject>
 		</section>

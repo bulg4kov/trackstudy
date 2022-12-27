@@ -59,16 +59,21 @@ const SubjectLabel = styled.span`
 `;
 
 function Subject({
+	subjectId = undefined,
 	color = "orange",
 	name = "Предмет",
 	progress = 0,
 	topic = undefined,
 	nextLesson = undefined,
 	active = false,
-	...props
+	onClick = undefined,
 }) {
 	return (
-		<StyledSubject color={color} active={active}>
+		<StyledSubject
+			color={color}
+			active={active}
+			onClick={onClick !== undefined ? (e) => onClick(e, subjectId) : null}
+		>
 			<SubjectTitle>{name}</SubjectTitle>
 			<SubjectProgress>
 				Мой прогресс

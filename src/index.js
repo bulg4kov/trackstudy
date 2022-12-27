@@ -28,6 +28,7 @@ const Theme = {
 	bgPrimary: "#EDFFFA",
 	buttonBg: "#EDFFFA",
 	buttonText: "#219A79",
+	link: "#2A4793",
 	cardBg: {
 		orange: "#FFFCF4",
 		green: "#DBFFD6",
