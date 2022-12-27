@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ButtonBasic from "../UI/Buttons/ButtonBasic";
 import SubjectSkill from "./SubjectSkill";
 import SubjectData from "./SubjectData";
+import SubjectLesson from "./SubjectLesson";
 
 const Subject = styled.article`
 	display: flex;
@@ -108,7 +109,14 @@ function SubjectCard({ subject, ...props }) {
 						addAction={function () {}}
 					>
 						{subject.lessons.map((lesson) =>
-							lesson.status === "waiting" ? lesson.topic : null
+							lesson.status === "waiting" ? (
+								<SubjectLesson
+									name={lesson.topic}
+									lessonId={lesson.id}
+									skills={lesson.skills}
+									time={new Date(lesson.time * 1000)}
+								/>
+							) : null
 						)}
 					</SubjectData>
 				</SubjectContainer>
