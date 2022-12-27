@@ -1,0 +1,78 @@
+[
+  {
+    "id": 0,
+    "name": "ReactJS",
+    "description": "Изучение фреймворка для JavaScript - ReactJS 16+ версии с хуками, функциональные компоненты",
+    "color": "orange",
+    "totalSkill": 67,
+    "lessons": [
+      {
+        "id": 0,
+        "time": "1672101138",
+        "topic": "useContext",
+        "status": "waiting"
+      },
+      {
+        "id": 1,
+        "time": "1670151138",
+        "topic": "useState",
+        "status": "competed"
+      },
+      {
+        "id": 2,
+        "time": "1670051138",
+        "topic": "useEffect",
+        "status": "failed"
+      }
+    ],
+    "skills": [
+      {
+        "id": 0,
+        "name": "Теоретическая база",
+        "progress": 90
+      },
+      {
+        "id": 1,
+        "name": "Практика",
+        "progress": 50
+      },
+      {
+        "id": 2,
+        "name": "Библиотеки",
+        "progress": 22
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "vue.js",
+    "description": "Изучение фреймворка для JavaScript - vue.js",
+    "color": "green",
+    "totalSkill": 10,
+    "lessons": [
+      {
+        "id": 0,
+        "time": "1672101138",
+        "topic": "Начало чтения документации vue.js",
+        "status": "waiting"
+      }
+    ],
+    "skills": [
+      {
+        "id": 0,
+        "name": "Теоретическая база",
+        "progress": 10
+      },
+      {
+        "id": 1,
+        "name": "Практика",
+        "progress": 5
+      },
+      {
+        "id": 2,
+        "name": "Библиотеки",
+        "progress": 0
+      }
+    ]
+  }
+]

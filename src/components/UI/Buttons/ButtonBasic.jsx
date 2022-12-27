@@ -11,6 +11,12 @@ const StyledButton = styled.button`
 	max-width: 150px;
 	border-radius: 16px;
 	cursor: pointer;
+	box-sizing: border-box;
+	border: 2px solid ${(props) => props.theme.buttonBg};
+	transition: all 100ms;
+	&:hover {
+		border-color: ${(props) => props.theme.buttonText};
+	}
 `;
 
 function ButtonBasic({
