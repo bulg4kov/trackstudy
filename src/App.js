@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import SubjectCard from "./components/Subject/SubjectCard";
 import SubjectCardEdit from "./components/Subject/SubjectCardEdit";
 import { getAppState, getCurrentSubjectId } from "./app/selectors/appSelectors";
+import { getAllSubjectsIds } from "./app/selectors/subjectsSelectors";
 
 const StyledApp = styled.main`
 	width: 1440px;
@@ -21,6 +22,7 @@ const StyledContainer = styled.div`
 
 function App() {
 	const currentSubjectId = useSelector((state) => getCurrentSubjectId(state));
+	const allSubjectsIds = useSelector((state) => getAllSubjectsIds(state));
 
 	const appState = useSelector((state) => getAppState(state));
 
@@ -29,10 +31,13 @@ function App() {
 			<Header />
 			<StyledContainer>
 				<Subjects />
-				{appState.currentStatus === "view" && currentSubjectId !== undefined ? (
+				{appState.currentStatus === "view" &&
+				currentSubjectId !== -1 &&
+				allSubjectsIds.includes(currentSubjectId) ? (
 					<SubjectCard currentSubjectId={currentSubjectId} />
 				) : appState.currentStatus === "edit" &&
-				  currentSubjectId !== undefined ? (
+				  currentSubjectId !== -1 &&
+				  allSubjectsIds.includes(currentSubjectId) ? (
 					<SubjectCardEdit currentSubjectId={currentSubjectId} />
 				) : null}
 			</StyledContainer>

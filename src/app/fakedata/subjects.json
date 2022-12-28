@@ -93,5 +93,42 @@
       }
     ],
     "materials": ["https://ru.vuejs.org/index.html"]
+  },
+  {
+    "id": 3,
+    "name": "vue.js",
+    "description": "Изучение фреймворка для JavaScript - vue.js",
+    "color": "green",
+    "totalSkill": 10,
+    "lessons": [
+      {
+        "id": 0,
+        "time": 1672101138,
+        "topic": "Начало чтения документации vue.js",
+        "status": "waiting",
+        "skills": [0, 2]
+      }
+    ],
+    "skills": [
+      {
+        "id": 0,
+        "name": "Теоретическая база",
+        "color": "blue",
+        "progress": 10
+      },
+      {
+        "id": 1,
+        "name": "Практика",
+        "color": "red",
+        "progress": 5
+      },
+      {
+        "id": 2,
+        "name": "Библиотеки",
+        "color": "green",
+        "progress": 0
+      }
+    ],
+    "materials": ["https://ru.vuejs.org/index.html"]
   }
 ]

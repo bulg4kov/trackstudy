@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ProgressBar from "../UI/ProgressBar";
 import { useSelector } from "react-redux";
 import { getLessonsForSubject } from "../../app/selectors/subjectsSelectors";
+import { useSubject } from "../../hooks/useSubject";
 
 const StyledSubject = styled.div`
 	width: 450px;
@@ -60,7 +61,9 @@ const SubjectLabel = styled.span`
 	padding: 6px 16px;
 `;
 
-function Subject({ subject, onClick }) {
+function Subject({ subjectId, onClick }) {
+	const subject = useSubject(subjectId);
+
 	const subjectLessons = useSelector((state) =>
 		getLessonsForSubject(state, subject.id)
 	);
@@ -94,7 +97,9 @@ function Subject({ subject, onClick }) {
 							})}
 						</SubjectInfoAccent>
 					</>
-				) : null}
+				) : (
+					"Занятий не найдено"
+				)}
 				{nextLesson !== undefined ? (
 					<SubjectLabel color={subject.color}>{nextLesson.topic}</SubjectLabel>
 				) : null}

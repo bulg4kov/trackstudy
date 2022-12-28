@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-	currentSubjectId: undefined,
+	currentSubjectId: -1,
 	currentStatus: "LIST",
 	savedAction: {},
 };
@@ -11,7 +11,7 @@ const appSlice = createSlice({
 	initialState,
 	reducers: {
 		changeCurrentSubject(state, action) {
-			state.currentSubjectId = action.payload.newId;
+			state.currentSubjectId = action.payload;
 		},
 		changeCurrentStatus(state, action) {
 			state.currentStatus = action.payload;

@@ -21,6 +21,7 @@ import {
 	addSubjectSkillPointThunk,
 	editSubject,
 	editSubjectLesson,
+	removeSubjectById,
 } from "../../app/slices/subjectsSlice";
 import SubjectLessonAdd from "./SubjectLessonAdd";
 import { getLessonsForSubject } from "../../app/selectors/subjectsSelectors";
@@ -88,6 +89,10 @@ function SubjectCard({ currentSubjectId }) {
 		setCurrentLesson(undefined);
 	};
 
+	const onRemoveSubject = () => {
+		dispatch(removeSubjectById(subject.id));
+	};
+
 	return (
 		<section>
 			<Subject>
@@ -99,6 +104,7 @@ function SubjectCard({ currentSubjectId }) {
 						</SubjectColor>
 					</SubjectTitle>
 					<ButtonBasic title="Редактировать" callback={onEditClick} />
+					<ButtonBasic title="Удалить" callback={onRemoveSubject} />
 				</SubjectHeader>
 				<SubjectDescription>{subject.description}</SubjectDescription>
 				<SubjectContainer>

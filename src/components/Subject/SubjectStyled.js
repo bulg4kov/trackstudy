@@ -10,7 +10,7 @@ export const Subject = styled.article`
 export const SubjectContainer = styled.div`
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: repeat(2, 1fr);
+	grid-template-rows: 1fr max-content;
 	grid-auto-flow: column;
 	gap: 24px;
 	justify-content: space-between;
@@ -19,7 +19,7 @@ export const SubjectContainer = styled.div`
 export const SubjectHeader = styled.div`
 	display: grid;
 	gap: 32px;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: 1fr;
 `;
 

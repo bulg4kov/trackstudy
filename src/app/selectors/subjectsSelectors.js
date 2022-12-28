@@ -1,8 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 export const selectSubjectById = createSelector(
-	[(state) => state.subjects, (state, id) => id],
-	(subjects, id) => subjects.filter((subject) => subject.id === id)[0]
+	(state) => state.subjects,
+	(state, id) => id,
+	(subjects, id) => {
+		return subjects.filter((subject) => subject.id == id)[0];
+	}
+	// (subjects, id) => subjects.find((subject) => subject.id === id)
+);
+
+export const getAllSubjectsIds = createSelector(
+	(state) => state.subjects,
+	(subjects) => subjects.map((subject) => subject.id)
 );
 
 function compareLessonsDate(a, b) {
@@ -16,8 +25,15 @@ function compareLessonsDate(a, b) {
 }
 
 export const getLessonsForSubject = createSelector(
-	[(state, subjectId) => state.subjects[subjectId]],
+	[
+		(state, subjectId) =>
+			state.subjects.find((subject) => subject.id == subjectId),
+	],
 	(subject, subjectId) => {
-		return JSON.parse(JSON.stringify(subject.lessons)).sort(compareLessonsDate);
+		if (subject !== undefined) {
+			return JSON.parse(JSON.stringify(subject.lessons)).sort(
+				compareLessonsDate
+			);
+		}
 	}
 );

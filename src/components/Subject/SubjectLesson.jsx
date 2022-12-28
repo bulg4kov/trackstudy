@@ -75,8 +75,13 @@ function SubjectLesson({
 			</LessonHeader>
 			<LessonTopic>{name}</LessonTopic>
 			{skillsUsed.map((skillUsed) => (
-				<LessonSkill key={skillUsed} color={skills[skillUsed].color}>
-					{skills[skillUsed].name}
+				<LessonSkill
+					key={skillUsed}
+					color={
+						skills[skills.findIndex((skill) => skill.id == skillUsed)].color
+					}
+				>
+					{skills[skills.findIndex((skill) => skill.id == skillUsed)].name}
 				</LessonSkill>
 			))}
 		</StyledLesson>

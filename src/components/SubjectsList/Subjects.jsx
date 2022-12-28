@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import ButtonBasic from "../UI/Buttons/ButtonBasic";
-import { createSelector } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import Subject from "./Subject";
 import {
 	changeCurrentStatus,
 	changeCurrentSubject,
 } from "../../app/slices/appSlice";
+import SubjectActions from "./SubjectActions";
+import { getAllSubjectsIds } from "../../app/selectors/subjectsSelectors";
 
 const SubjectsSection = styled.section`
 	display: flex;
@@ -16,51 +16,39 @@ const SubjectsSection = styled.section`
 	max-width: 450px;
 `;
 
-const SubjectsAction = styled.div`
-	display: flex;
-	gap: 24px;
-`;
-
 const SubjectsList = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
 `;
 
-const getSubjects = createSelector(
-	(state) => state.subjects,
-	(subjects) =>
-		subjects.map((subject) => ({
-			id: subject.id,
-			name: subject.name,
-			skill: subject.totalSkill,
-			color: subject.color,
-			lessons: subject.lessons.length > 0 ? subject.lessons : undefined,
-		}))
-);
-
 function Subjects() {
-	const subjects = useSelector((state) => getSubjects(state));
+	const subjectsIds = useSelector((state) => getAllSubjectsIds(state));
 
 	const dispatch = useDispatch();
 
 	const onSubjectClick = (e, subjectId) => {
-		dispatch(changeCurrentSubject({ newId: subjectId }));
+		dispatch(changeCurrentSubject(subjectId));
 		dispatch(changeCurrentStatus("view"));
 	};
 
+	if (subjectsIds.length < 1) {
+		return (
+			<SubjectsSection>
+				<SubjectActions />У вас пока нету предметов!
+			</SubjectsSection>
+		);
+	}
+
 	return (
 		<SubjectsSection>
-			<SubjectsAction>
-				<h2 className={"TabTitle"}>Мои предметы</h2>
-				<ButtonBasic title={"Добавить"} />
-			</SubjectsAction>
+			<SubjectActions />
 			<SubjectsList>
-				{subjects.map((subject) => (
+				{subjectsIds.map((subjectId) => (
 					<Subject
-						subject={subject}
+						subjectId={subjectId}
 						onClick={onSubjectClick}
-						key={subject.id}
+						key={subjectId}
 					/>
 				))}
 			</SubjectsList>
