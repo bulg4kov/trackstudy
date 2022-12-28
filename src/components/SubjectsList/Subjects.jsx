@@ -41,6 +41,7 @@ const getSubjects = createSelector(
 
 function Subjects() {
 	const subjects = useSelector((state) => getSubjects(state));
+
 	const dispatch = useDispatch();
 
 	const onSubjectClick = (e, subjectId) => {
@@ -57,13 +58,7 @@ function Subjects() {
 			<SubjectsList>
 				{subjects.map((subject) => (
 					<Subject
-						subjectId={subject.id}
-						color={subject.color}
-						name={subject.name}
-						progress={subject.skill}
-						nextLesson={subject.lessons.filter(
-							(lesson) => lesson.status === "waiting"
-						)}
+						subject={subject}
 						onClick={onSubjectClick}
 						key={subject.id}
 					/>

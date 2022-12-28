@@ -1,6 +1,8 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
 import ProgressBar from "../UI/ProgressBar";
+import { useSelector } from "react-redux";
+import { getLessonsForSubject } from "../../app/selectors/subjectsSelectors";
 
 const StyledSubject = styled.div`
 	width: 450px;
@@ -58,30 +60,28 @@ const SubjectLabel = styled.span`
 	padding: 6px 16px;
 `;
 
-function Subject({
-	subjectId = undefined,
-	color = "orange",
-	name = "Предмет",
-	progress = 0,
-	topic = undefined,
-	nextLesson = undefined,
-	active = false,
-	onClick = undefined,
-}) {
-	nextLesson = useMemo(() => {
-		return nextLesson !== [] ? nextLesson[0] : undefined;
-	}, [nextLesson]);
+function Subject({ subject, onClick }) {
+	const subjectLessons = useSelector((state) =>
+		getLessonsForSubject(state, subject.id)
+	);
+
+	const nextLesson = subjectLessons.find(
+		(lesson) => lesson.status === "waiting"
+	);
 
 	return (
 		<StyledSubject
-			color={color}
-			active={active}
-			onClick={onClick !== undefined ? (e) => onClick(e, subjectId) : null}
+			color={subject.color}
+			onClick={onClick !== undefined ? (e) => onClick(e, subject.id) : null}
 		>
-			<SubjectTitle>{name}</SubjectTitle>
+			<SubjectTitle>{subject.name}</SubjectTitle>
 			<SubjectProgress>
 				Мой прогресс
-				<ProgressBar color={color} max={100} current={progress} />
+				<ProgressBar
+					color={subject.color}
+					max={100}
+					current={subject.totalSkill}
+				/>
 			</SubjectProgress>
 			<SubjectInfo>
 				{nextLesson !== undefined ? (
@@ -96,7 +96,7 @@ function Subject({
 					</>
 				) : null}
 				{nextLesson !== undefined ? (
-					<SubjectLabel color={color}>{nextLesson.topic}</SubjectLabel>
+					<SubjectLabel color={subject.color}>{nextLesson.topic}</SubjectLabel>
 				) : null}
 			</SubjectInfo>
 		</StyledSubject>

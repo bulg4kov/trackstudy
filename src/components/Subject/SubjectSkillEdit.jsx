@@ -42,7 +42,7 @@ function SubjectSkillEdit({
 			<SelectBasic
 				options={colorsList}
 				onChange={handleSkillColorChange}
-				value={skill.name}
+				value={skill.color}
 			/>
 			<SubjectSubAction type="fail" onClick={(e) => onRemove(id)}>
 				Удалить

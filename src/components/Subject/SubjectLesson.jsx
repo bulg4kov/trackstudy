@@ -57,12 +57,17 @@ function SubjectLesson({
 						<SubjectSubAction
 							type="complete"
 							onClick={(e) => onComplete(lessonId)}
+							title="Занятие прошло успешно"
 						>
 							+
 						</SubjectSubAction>
 					) : null}
 					{onFail !== undefined ? (
-						<SubjectSubAction type="fail" onClick={(e) => onFail(lessonId)}>
+						<SubjectSubAction
+							type="fail"
+							onClick={(e) => onFail(lessonId)}
+							title="Занятие не состоялось"
+						>
 							-
 						</SubjectSubAction>
 					) : null}

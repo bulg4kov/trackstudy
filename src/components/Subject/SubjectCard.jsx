@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ButtonBasic from "../UI/Buttons/ButtonBasic";
 import SubjectSkill from "./SubjectSkill";
 import SubjectData from "./SubjectData";
@@ -13,18 +13,34 @@ import {
 	SubjectMaterial,
 	SubjectTitle,
 } from "./SubjectStyled";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeCurrentStatus } from "../../app/slices/appSlice";
 import { useSubject } from "../../hooks/useSubject";
 import {
+	addNewLesson,
 	addSubjectSkillPointThunk,
 	editSubject,
+	editSubjectLesson,
 } from "../../app/slices/subjectsSlice";
+import SubjectLessonAdd from "./SubjectLessonAdd";
+import { getLessonsForSubject } from "../../app/selectors/subjectsSelectors";
 
 function SubjectCard({ currentSubjectId }) {
+	const [addNewLessonActive, setAddNewLessonActive] = useState(false);
+	const [currentLesson, setCurrentLesson] = useState(undefined);
+
+	useEffect(() => {
+		setAddNewLessonActive(false);
+		setCurrentLesson(undefined);
+	}, [currentSubjectId]);
+
 	const dispatch = useDispatch();
 
 	const subject = useSubject(currentSubjectId);
+
+	const subjectLessons = useSelector((state) =>
+		getLessonsForSubject(state, subject.id)
+	);
 
 	const onEditClick = () => {
 		dispatch(changeCurrentStatus("edit"));
@@ -37,7 +53,7 @@ function SubjectCard({ currentSubjectId }) {
 		);
 		const targetLesson = newLessons[targetLessonId];
 		const targetSkillsIds = targetLesson.skills;
-		targetLesson.status = "complete";
+		targetLesson.status = "completed";
 		dispatch(editSubject({ ...subject, lessons: newLessons }));
 		dispatch(addSubjectSkillPointThunk(currentSubjectId, targetSkillsIds));
 	};
@@ -50,6 +66,26 @@ function SubjectCard({ currentSubjectId }) {
 		const targetLesson = newLessons[targetLessonId];
 		targetLesson.status = "fail";
 		dispatch(editSubject({ ...subject, lessons: newLessons }));
+	};
+
+	const onAddNewLesson = () => {
+		setAddNewLessonActive(true);
+		const newDate = new Date();
+		const newLesson = {
+			id: subject.lessons.length + 1,
+			time: newDate.getTime() / 1000,
+			topic: "Моё новое занятие",
+			status: "waiting",
+			skills: [],
+		};
+		dispatch(addNewLesson(subject.id, newLesson));
+		setCurrentLesson(newLesson);
+	};
+
+	const onLessonSave = (newLesson) => {
+		dispatch(editSubjectLesson(subject.id, newLesson));
+		setAddNewLessonActive(false);
+		setCurrentLesson(undefined);
 	};
 
 	return (
@@ -99,36 +135,45 @@ function SubjectCard({ currentSubjectId }) {
 					<SubjectData
 						alignRight
 						title={"Мои занятия"}
-						addAction={function () {}}
+						addAction={onAddNewLesson}
 					>
-						{subject.lessons.map((lesson) =>
-							lesson.status === "waiting" ? (
-								<SubjectLesson
-									key={lesson.id}
-									name={lesson.topic}
-									lessonId={lesson.id}
-									skillsUsed={lesson.skills}
-									skills={subject.skills}
-									onComplete={onLessonComplete}
-									onFail={onLessonFail}
-									time={new Date(lesson.time * 1000)}
-								/>
-							) : null
-						)}
+						{addNewLessonActive === false &&
+							subjectLessons.map((lesson) =>
+								lesson.status === "waiting" ? (
+									<SubjectLesson
+										key={lesson.id}
+										name={lesson.topic}
+										lessonId={lesson.id}
+										skillsUsed={lesson.skills}
+										skills={subject.skills}
+										onComplete={onLessonComplete}
+										onFail={onLessonFail}
+										time={new Date(lesson.time * 1000)}
+									/>
+								) : null
+							)}
+						{addNewLessonActive === true && currentLesson !== undefined ? (
+							<SubjectLessonAdd
+								initData={currentLesson}
+								availableSkills={subject.skills}
+								onSave={onLessonSave}
+							/>
+						) : null}
 					</SubjectData>
 					<SubjectData title={"Прошлые занятия"} expand={false}>
-						{subject.lessons.map((lesson) =>
-							lesson.status === "complete" ? (
-								<SubjectLesson
-									key={lesson.id}
-									name={lesson.topic}
-									lessonId={lesson.id}
-									skillsUsed={lesson.skills}
-									skills={subject.skills}
-									time={new Date(lesson.time * 1000)}
-								/>
-							) : null
-						)}
+						{!addNewLessonActive &&
+							subjectLessons.map((lesson) =>
+								lesson.status === "completed" ? (
+									<SubjectLesson
+										key={lesson.id}
+										name={lesson.topic}
+										lessonId={lesson.id}
+										skillsUsed={lesson.skills}
+										skills={subject.skills}
+										time={new Date(lesson.time * 1000)}
+									/>
+								) : null
+							)}
 					</SubjectData>
 				</SubjectContainer>
 			</Subject>

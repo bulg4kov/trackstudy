@@ -22,6 +22,27 @@ export const addSubjectSkillPointThunk =
 		setSubjects(getState().subjects);
 	};
 
+export const addNewLesson = (subjectId, newLesson) => (dispatch, getState) => {
+	dispatch(
+		editLessons({
+			subjectId: subjectId,
+			newLesson: newLesson,
+		})
+	);
+	setSubjects(getState().subjects);
+};
+
+export const editSubjectLesson =
+	(subjectId, lesson) => (dispatch, getState) => {
+		dispatch(
+			editLesson({
+				subjectId: subjectId,
+				lesson: lesson,
+			})
+		);
+		setSubjects(getState().subjects);
+	};
+
 const subjectsSlice = createSlice({
 	name: "subjects",
 	initialState,
@@ -42,10 +63,30 @@ const subjectsSlice = createSlice({
 				}
 			});
 		},
+		editLessons(state, action) {
+			const payload = action.payload;
+			const subjectId = payload.subjectId;
+			const newLesson = payload.newLesson;
+			state[subjectId].lessons.push(newLesson);
+		},
+		editLesson(state, action) {
+			const payload = action.payload;
+			const subjectId = payload.subjectId;
+			const newLesson = payload.lesson;
+			const lessonIndex = state[subjectId].lessons.findIndex(
+				(lesson) => lesson.id == newLesson.id
+			);
+			state[subjectId].lessons[lessonIndex] = newLesson;
+		},
 	},
 });
 
-export const { setSubject, setSubjectSkills, addSubjectSkillPoint } =
-	subjectsSlice.actions;
+export const {
+	setSubject,
+	setSubjectSkills,
+	addSubjectSkillPoint,
+	editLessons,
+	editLesson,
+} = subjectsSlice.actions;
 
 export default subjectsSlice.reducer;
