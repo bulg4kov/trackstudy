@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ButtonAddBig from "../UI/Buttons/ButtonAddBig";
 
@@ -15,7 +15,17 @@ const StyledColumnHeader = styled.div`
 	gap: 12px;
 	font-size: 20px;
 	font-weight: 500;
-	align-items: baseline;
+	align-items: center;
+`;
+
+const ExpandArrow = styled.button`
+	font-size: 12px;
+	font-weight: 400;
+	cursor: pointer;
+	border: none;
+	background-color: unset;
+	transition: transform 0.2s;
+	transform: ${(props) => (props.expanded ? "scaleY(-1)" : "none")};
 `;
 
 function SubjectData({
@@ -23,15 +33,29 @@ function SubjectData({
 	addAction = undefined,
 	alignRight,
 	children,
+	expand,
 	props,
 }) {
+	const [expanded, setExpanded] = useState(
+		expand !== undefined ? expand : true
+	);
+
 	return (
-		<StyledSubjectData alignRight={alignRight}>
+		<StyledSubjectData>
 			<StyledColumnHeader>
 				{title}
 				{addAction !== undefined ? <ButtonAddBig callback={addAction} /> : null}
+				{expand !== undefined ? (
+					<ExpandArrow
+						onClick={() => setExpanded(!expanded)}
+						expanded={expanded}
+					>
+						▼
+					</ExpandArrow>
+				) : null}
 			</StyledColumnHeader>
-			{children}
+
+			{expanded ? children : null}
 		</StyledSubjectData>
 	);
 }

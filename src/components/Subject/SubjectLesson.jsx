@@ -53,12 +53,19 @@ function SubjectLesson({
 					day: "numeric",
 				})}
 				<LessonActions>
-					<SubjectSubAction type="complete" onClick={onComplete}>
-						+
-					</SubjectSubAction>
-					<SubjectSubAction type="fail" onClick={onFail}>
-						-
-					</SubjectSubAction>
+					{onComplete !== undefined ? (
+						<SubjectSubAction
+							type="complete"
+							onClick={(e) => onComplete(lessonId)}
+						>
+							+
+						</SubjectSubAction>
+					) : null}
+					{onFail !== undefined ? (
+						<SubjectSubAction type="fail" onClick={(e) => onFail(lessonId)}>
+							-
+						</SubjectSubAction>
+					) : null}
 				</LessonActions>
 			</LessonHeader>
 			<LessonTopic>{name}</LessonTopic>

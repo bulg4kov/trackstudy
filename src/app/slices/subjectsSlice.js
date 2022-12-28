@@ -11,6 +11,17 @@ export const editSubject = (subject) => (dispatch, getState) => {
 	setSubjects(getState().subjects);
 };
 
+export const addSubjectSkillPointThunk =
+	(subjectId, skillIds) => (dispatch, getState) => {
+		dispatch(
+			addSubjectSkillPoint({
+				subjectId: subjectId,
+				skillIds: skillIds,
+			})
+		);
+		setSubjects(getState().subjects);
+	};
+
 const subjectsSlice = createSlice({
 	name: "subjects",
 	initialState,
@@ -20,9 +31,21 @@ const subjectsSlice = createSlice({
 			const subjectId = payload.id;
 			state[subjectId] = payload;
 		},
+		addSubjectSkillPoint(state, action) {
+			const payload = action.payload;
+			const subjectId = payload.subjectId;
+			const skillIds = payload.skillIds;
+			const skills = state[subjectId].skills;
+			skills.forEach((skill) => {
+				if (skillIds.includes(skill.id)) {
+					skill.progress++;
+				}
+			});
+		},
 	},
 });
 
-export const { setSubject, setSubjectSkills } = subjectsSlice.actions;
+export const { setSubject, setSubjectSkills, addSubjectSkillPoint } =
+	subjectsSlice.actions;
 
 export default subjectsSlice.reducer;
