@@ -5,8 +5,8 @@ import Header from "./components/Header/Header";
 import Subjects from "./components/SubjectsList/Subjects";
 import { useSelector } from "react-redux";
 import { createSelector } from "@reduxjs/toolkit";
-import SubjectCardEdit from "./components/Subject/SubjectCardEdit";
 import SubjectCard from "./components/Subject/SubjectCard";
+import SubjectCardEdit from "./components/Subject/SubjectCardEdit";
 
 const StyledApp = styled.main`
 	width: 1440px;
@@ -24,12 +24,13 @@ const selectSubjectById = createSelector(
 	(subjects, id) => subjects.filter((subject) => subject.id === id)[0]
 );
 
-function App() {
-	const currentSubjectId = useSelector((state) => state.app.currentSubjectId);
+const getCurrentSubjectId = createSelector(
+	(state) => state.app,
+	(appState) => appState.currentSubjectId
+);
 
-	const currentSubject = useSelector((state) =>
-		selectSubjectById(state, currentSubjectId)
-	);
+function App() {
+	const currentSubjectId = useSelector((state) => getCurrentSubjectId(state));
 
 	const appState = useSelector((state) => state.app);
 
@@ -38,11 +39,11 @@ function App() {
 			<Header />
 			<StyledContainer>
 				<Subjects />
-				{appState.currentStatus === "edit" && currentSubject !== undefined ? (
-					<SubjectCardEdit subject={currentSubject} />
-				) : appState.currentStatus === "view" &&
-				  currentSubject !== undefined ? (
-					<SubjectCard subject={currentSubject} />
+				{appState.currentStatus === "view" && currentSubjectId !== undefined ? (
+					<SubjectCard currentSubjectId={currentSubjectId} />
+				) : appState.currentStatus === "edit" &&
+				  currentSubjectId !== undefined ? (
+					<SubjectCardEdit currentSubjectId={currentSubjectId} />
 				) : null}
 			</StyledContainer>
 		</StyledApp>

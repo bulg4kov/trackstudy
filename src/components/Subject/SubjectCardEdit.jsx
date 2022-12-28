@@ -12,10 +12,12 @@ import SelectBasic from "../UI/Selects/SelectBasic";
 import { colorsList } from "../../utils/colorsList";
 import SubjectSkillEdit from "./SubjectSkillEdit";
 import { editSubject } from "../../app/slices/subjectsSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeCurrentStatus } from "../../app/slices/appSlice";
 
-function SubjectCardEdit({ subject, ...props }) {
+function SubjectCardEdit({ currentSubjectId }) {
+	const subject = useSelector((state) => state.subjects[currentSubjectId]);
+
 	const [nameValue, setNameValue] = useState(subject.name);
 	const [colorValue, setColorValue] = useState(subject.color);
 	const [descValue, setDescValue] = useState(subject.description);

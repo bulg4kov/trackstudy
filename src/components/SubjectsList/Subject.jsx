@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import ProgressBar from "../UI/ProgressBar";
 
@@ -68,6 +68,10 @@ function Subject({
 	active = false,
 	onClick = undefined,
 }) {
+	nextLesson = useMemo(() => {
+		return nextLesson !== [] ? nextLesson[0] : undefined;
+	}, [nextLesson]);
+
 	return (
 		<StyledSubject
 			color={color}
@@ -84,15 +88,15 @@ function Subject({
 					<>
 						следующее занятие
 						<SubjectInfoAccent>
-							{nextLesson.toLocaleString("ru-RU", {
+							{new Date(nextLesson.time * 1000).toLocaleString("ru-RU", {
 								month: "short",
 								day: "numeric",
 							})}
 						</SubjectInfoAccent>
 					</>
 				) : null}
-				{topic !== undefined ? (
-					<SubjectLabel color={color}>{topic}</SubjectLabel>
+				{nextLesson !== undefined ? (
+					<SubjectLabel color={color}>{nextLesson.topic}</SubjectLabel>
 				) : null}
 			</SubjectInfo>
 		</StyledSubject>

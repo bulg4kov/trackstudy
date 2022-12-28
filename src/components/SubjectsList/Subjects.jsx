@@ -35,10 +35,7 @@ const getSubjects = createSelector(
 			name: subject.name,
 			skill: subject.totalSkill,
 			color: subject.color,
-			lesson:
-				subject.lessons.length > 0
-					? subject.lessons[subject.lessons.length - 1]
-					: undefined,
+			lessons: subject.lessons.length > 0 ? subject.lessons : undefined,
 		}))
 );
 
@@ -64,8 +61,9 @@ function Subjects() {
 						color={subject.color}
 						name={subject.name}
 						progress={subject.skill}
-						nextLesson={new Date(subject.lesson.time * 1000)}
-						topic={subject.lesson.topic}
+						nextLesson={subject.lessons.filter(
+							(lesson) => lesson.status === "waiting"
+						)}
 						onClick={onSubjectClick}
 						key={subject.id}
 					/>

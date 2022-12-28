@@ -13,11 +13,13 @@ import {
 	SubjectMaterial,
 	SubjectTitle,
 } from "./SubjectStyled";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeCurrentStatus } from "../../app/slices/appSlice";
 
-function SubjectCard({ subject, ...props }) {
+function SubjectCard({ currentSubjectId }) {
 	const dispatch = useDispatch();
+
+	const subject = useSelector((state) => state.subjects[currentSubjectId]);
 
 	const onEditClick = () => {
 		dispatch(changeCurrentStatus("edit"));
