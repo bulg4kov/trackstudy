@@ -68,20 +68,6 @@ function Subjects() {
 						key={subject.id}
 					/>
 				))}
-				{/*<Subject*/}
-				{/*	color="orange"*/}
-				{/*	name="ReactJS"*/}
-				{/*	progress={67}*/}
-				{/*	nextLesson={new Date("2022-12-31")}*/}
-				{/*	topic="useContext"*/}
-				{/*/>*/}
-				{/*<Subject*/}
-				{/*	color="green"*/}
-				{/*	name="VueJS"*/}
-				{/*	progress={5}*/}
-				{/*	nextLesson={new Date("2023-1-3")}*/}
-				{/*	topic="Основы vue.js и как его применять на практике, документация vue.js"*/}
-				{/*/>*/}
 			</SubjectsList>
 		</SubjectsSection>
 	);

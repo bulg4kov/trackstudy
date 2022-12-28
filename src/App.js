@@ -4,9 +4,9 @@ import styled from "styled-components";
 import Header from "./components/Header/Header";
 import Subjects from "./components/SubjectsList/Subjects";
 import { useSelector } from "react-redux";
-import { createSelector } from "@reduxjs/toolkit";
 import SubjectCard from "./components/Subject/SubjectCard";
 import SubjectCardEdit from "./components/Subject/SubjectCardEdit";
+import { getAppState, getCurrentSubjectId } from "./app/selectors/appSelectors";
 
 const StyledApp = styled.main`
 	width: 1440px;
@@ -19,20 +19,10 @@ const StyledContainer = styled.div`
 	gap: 142px;
 `;
 
-const selectSubjectById = createSelector(
-	[(state) => state.subjects, (state, id) => id],
-	(subjects, id) => subjects.filter((subject) => subject.id === id)[0]
-);
-
-const getCurrentSubjectId = createSelector(
-	(state) => state.app,
-	(appState) => appState.currentSubjectId
-);
-
 function App() {
 	const currentSubjectId = useSelector((state) => getCurrentSubjectId(state));
 
-	const appState = useSelector((state) => state.app);
+	const appState = useSelector((state) => getAppState(state));
 
 	return (
 		<StyledApp>
