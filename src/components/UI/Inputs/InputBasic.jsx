@@ -23,6 +23,7 @@ function InputBasic({
 	onChange,
 	type = "text",
 	name = "Input",
+	placeholder = "",
 	small = false,
 }) {
 	return (
@@ -32,6 +33,7 @@ function InputBasic({
 				small={small}
 				value={value}
 				type={type}
+				placeholder={placeholder}
 				onChange={onChange}
 			/>
 		</StyledLabel>

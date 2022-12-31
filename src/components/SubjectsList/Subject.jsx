@@ -27,6 +27,8 @@ const StyledSubject = styled.div`
 const SubjectTitle = styled.span`
 	font-size: 32px;
 	font-weight: 500;
+	word-wrap: break-word;
+	max-width: 100%;
 `;
 
 const SubjectProgress = styled.div`
@@ -65,17 +67,17 @@ function Subject({ subjectId, onClick }) {
 	const subject = useSubject(subjectId);
 
 	const subjectLessons = useSelector((state) =>
-		getLessonsForSubject(state, subject.id)
+		getLessonsForSubject(state, subjectId)
 	);
 
-	const nextLesson = subjectLessons.find(
+	const nextLesson = Object.values(subjectLessons).find(
 		(lesson) => lesson.status === "waiting"
 	);
 
 	return (
 		<StyledSubject
 			color={subject.color}
-			onClick={onClick !== undefined ? (e) => onClick(e, subject.id) : null}
+			onClick={onClick !== undefined ? (e) => onClick(e, subjectId) : null}
 		>
 			<SubjectTitle>{subject.name}</SubjectTitle>
 			<SubjectProgress>

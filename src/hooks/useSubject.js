@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import { selectSubjectById } from "../app/selectors/subjectsSelectors";
+import { getSubjectById } from "../app/selectors/subjectsSelectors";
 
 export const useSubject = (subjectId) => {
-	return useSelector((state) => selectSubjectById(state, subjectId));
+	return useSelector((state) => getSubjectById(state, subjectId));
 };

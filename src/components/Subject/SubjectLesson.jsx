@@ -39,7 +39,7 @@ function SubjectLesson({
 	lessonId = undefined,
 	time = new Date(),
 	name = "",
-	skills = [],
+	skills = {},
 	skillsUsed = [],
 	onComplete,
 	onFail,
@@ -74,16 +74,13 @@ function SubjectLesson({
 				</LessonActions>
 			</LessonHeader>
 			<LessonTopic>{name}</LessonTopic>
-			{skillsUsed.map((skillUsed) => (
-				<LessonSkill
-					key={skillUsed}
-					color={
-						skills[skills.findIndex((skill) => skill.id == skillUsed)].color
-					}
-				>
-					{skills[skills.findIndex((skill) => skill.id == skillUsed)].name}
-				</LessonSkill>
-			))}
+			{skillsUsed.map((skillUsed) =>
+				Object.keys(skills).includes(skillUsed) > 0 ? (
+					<LessonSkill key={skillUsed} color={skills[skillUsed].color}>
+						{skills[skillUsed].name}
+					</LessonSkill>
+				) : null
+			)}
 		</StyledLesson>
 	);
 }

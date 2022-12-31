@@ -4,6 +4,8 @@ import SelectBasic from "../UI/Selects/SelectBasic";
 import InputBasic from "../UI/Inputs/InputBasic";
 import { SubjectSubAction } from "./SubjectSubAction";
 import ButtonBasic from "../UI/Buttons/ButtonBasic";
+import { useSelector } from "react-redux";
+import { getLessonById } from "../../app/selectors/subjectsSelectors";
 
 const StylesLessonEditabel = styled.div`
 	display: flex;
@@ -21,18 +23,31 @@ const StyledDivFlex = styled.div`
 	gap: 16px;
 `;
 
-function SubjectLessonAdd({ initData, onSave, availableSkills, ...props }) {
+function SubjectLessonAdd({
+	subjectId,
+	lessonId,
+	onSave,
+	availableSkills,
+	...props
+}) {
+	const currentLesson = useSelector((state) =>
+		getLessonById(state, subjectId, lessonId)
+	);
+
+	// Установка состояния начальной даты
 	const [date, setDate] = useState(() => {
-		const date = new Date(initData.time * 1000);
+		const date = new Date(currentLesson.time * 1000);
 		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 	});
+
+	// Установка состояния навыков для занятия
 	const [selectedSkill, setSelectedSkill] = useState(
-		availableSkills !== undefined && availableSkills.length > 0
-			? availableSkills[0].id
+		availableSkills !== undefined && Object.keys(availableSkills).length > 0
+			? Object.keys(availableSkills)[0]
 			: undefined
 	);
 	const [addedSkills, setAddedSkills] = useState([]);
-	const [topic, setTopic] = useState(initData.topic);
+	const [topic, setTopic] = useState("");
 
 	const handleSetDate = (e) => {
 		const newDate = e.target.value;
@@ -61,12 +76,12 @@ function SubjectLessonAdd({ initData, onSave, availableSkills, ...props }) {
 
 	const handleSave = (e) => {
 		const newLesson = {
-			...initData,
+			...currentLesson,
 			skills: addedSkills,
 			topic: topic,
 			time: parseInt(new Date(date).getTime()) / 1000,
 		};
-		onSave(newLesson);
+		onSave(newLesson, lessonId);
 	};
 
 	return (
@@ -82,16 +97,18 @@ function SubjectLessonAdd({ initData, onSave, availableSkills, ...props }) {
 				name={"Тема занятия"}
 				type={"text"}
 				value={topic}
+				placeholder={"Моё новое занятие"}
 				onChange={(e) => setTopic(e.target.value)}
 				small
 			/>
-			{availableSkills !== undefined && availableSkills.length > 0 ? (
+			{availableSkills !== undefined &&
+			Object.keys(availableSkills).length > 0 ? (
 				<StyledDivFlex>
 					<SelectBasic
-						options={availableSkills.map((skill) => {
-							return { name: skill.name, value: skill.id };
+						options={Object.entries(availableSkills).map((skill) => {
+							return { name: skill[1].name, value: skill[0] };
 						})}
-						onChange={(e) => setSelectedSkill(parseInt(e.target.value))}
+						onChange={(e) => setSelectedSkill(e.target.value)}
 					/>
 					<SubjectSubAction type={"complete"} onClick={handleAddSkill}>
 						+
@@ -99,9 +116,13 @@ function SubjectLessonAdd({ initData, onSave, availableSkills, ...props }) {
 				</StyledDivFlex>
 			) : null}
 			{addedSkills.length > 0
-				? addedSkills.map((skill, index) => (
+				? addedSkills.map((skill) => (
 						<StyledDivFlex key={skill}>
-							{availableSkills.find((avSkill) => avSkill.id == skill).name}
+							{
+								Object.entries(availableSkills).find((avSkill) => {
+									return avSkill[0] == skill;
+								})[1].name
+							}
 							<SubjectSubAction
 								type={"fail"}
 								onClick={(e) => handleRemoveSkill(skill)}

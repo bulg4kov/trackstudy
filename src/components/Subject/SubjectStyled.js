@@ -19,13 +19,15 @@ export const SubjectContainer = styled.div`
 export const SubjectHeader = styled.div`
 	display: grid;
 	gap: 32px;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(3, 50%);
 	grid-template-rows: 1fr;
 `;
 
 export const SubjectTitle = styled.div`
 	display: flex;
 	flex-direction: column;
+	word-wrap: break-word;
+	hyphens: auto;
 	gap: ${(props) => (props.cardEdit ? "12px" : "0px")};
 `;
 

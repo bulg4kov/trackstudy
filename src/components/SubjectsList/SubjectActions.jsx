@@ -2,7 +2,7 @@ import React from "react";
 import ButtonBasic from "../UI/Buttons/ButtonBasic";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { addSubjectThunk } from "../../app/slices/subjectsSlice";
+import { addSubjectThunk } from "../../app/slices/subjectsThunks";
 
 const SubjectsAction = styled.div`
 	display: flex;

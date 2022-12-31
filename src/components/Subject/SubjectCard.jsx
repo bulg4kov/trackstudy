@@ -14,83 +14,93 @@ import {
 	SubjectTitle,
 } from "./SubjectStyled";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCurrentStatus } from "../../app/slices/appSlice";
-import { useSubject } from "../../hooks/useSubject";
 import {
-	addNewLesson,
-	addSubjectSkillPointThunk,
-	editSubject,
-	editSubjectLesson,
-	removeSubjectById,
-} from "../../app/slices/subjectsSlice";
+	setCurrentLessonId,
+	setCurrentStatus,
+} from "../../app/slices/appSlice";
+import { useSubject } from "../../hooks/useSubject";
 import SubjectLessonAdd from "./SubjectLessonAdd";
 import { getLessonsForSubject } from "../../app/selectors/subjectsSelectors";
+import {
+	addNewLessonThunk,
+	addSubjectMaterialThunk,
+	addSubjectSkillPointThunk,
+	editSubjectLessonThunk,
+	setSubjectLessonStatusThunk,
+} from "../../app/slices/subjectsThunks";
+import SubjectMaterialAdd from "./SubjectMaterialAdd";
 
 function SubjectCard({ currentSubjectId }) {
+	const currentLessonId = useSelector((state) => state.app.currentLessonId);
+
 	const [addNewLessonActive, setAddNewLessonActive] = useState(false);
-	const [currentLesson, setCurrentLesson] = useState(undefined);
+	const [addNewMaterialActive, setAddNewMaterialActive] = useState(false);
 
 	useEffect(() => {
 		setAddNewLessonActive(false);
-		setCurrentLesson(undefined);
 	}, [currentSubjectId]);
 
 	const dispatch = useDispatch();
 
 	const subject = useSubject(currentSubjectId);
 
+	const subjectSkills = subject.skills;
+
+	const subjectMaterials = subject.materials;
+
 	const subjectLessons = useSelector((state) =>
-		getLessonsForSubject(state, subject.id)
+		getLessonsForSubject(state, currentSubjectId)
 	);
 
 	const onEditClick = () => {
-		dispatch(changeCurrentStatus("edit"));
+		dispatch(setCurrentStatus("edit"));
 	};
 
 	const onLessonComplete = (lessonId) => {
-		const newLessons = JSON.parse(JSON.stringify(subject.lessons));
-		const targetLessonId = newLessons.findIndex(
-			(lesson) => lesson.id === lessonId
+		dispatch(
+			setSubjectLessonStatusThunk(currentSubjectId, lessonId, "completed")
 		);
-		const targetLesson = newLessons[targetLessonId];
-		const targetSkillsIds = targetLesson.skills;
-		targetLesson.status = "completed";
-		dispatch(editSubject({ ...subject, lessons: newLessons }));
-		dispatch(addSubjectSkillPointThunk(currentSubjectId, targetSkillsIds));
+		dispatch(addSubjectSkillPointThunk(currentSubjectId, lessonId));
 	};
 
 	const onLessonFail = (lessonId) => {
-		const newLessons = JSON.parse(JSON.stringify(subject.lessons));
-		const targetLessonId = newLessons.findIndex(
-			(lesson) => lesson.id === lessonId
-		);
-		const targetLesson = newLessons[targetLessonId];
-		targetLesson.status = "fail";
-		dispatch(editSubject({ ...subject, lessons: newLessons }));
+		dispatch(setSubjectLessonStatusThunk(currentSubjectId, lessonId, "failed"));
 	};
 
 	const onAddNewLesson = () => {
+		if (addNewLessonActive) {
+			return;
+		}
 		setAddNewLessonActive(true);
 		const newDate = new Date();
 		const newLesson = {
-			id: subject.lessons.length + 1,
 			time: newDate.getTime() / 1000,
 			topic: "Моё новое занятие",
 			status: "waiting",
 			skills: [],
 		};
-		dispatch(addNewLesson(subject.id, newLesson));
-		setCurrentLesson(newLesson);
+		dispatch(addNewLessonThunk(currentSubjectId, newLesson));
 	};
 
-	const onLessonSave = (newLesson) => {
-		dispatch(editSubjectLesson(subject.id, newLesson));
+	const onLessonSave = (lesson, lessonId) => {
+		dispatch(editSubjectLessonThunk(currentSubjectId, lesson, lessonId));
 		setAddNewLessonActive(false);
-		setCurrentLesson(undefined);
+		dispatch(setCurrentLessonId(-1));
 	};
 
-	const onRemoveSubject = () => {
-		dispatch(removeSubjectById(subject.id));
+	const onMaterialAdd = () => {
+		if (addNewMaterialActive) {
+			return;
+		}
+		setAddNewMaterialActive(true);
+	};
+
+	const onMaterialSave = (data) => {
+		setAddNewMaterialActive(false);
+		if (!data.length) {
+			return;
+		}
+		dispatch(addSubjectMaterialThunk(currentSubjectId, data));
 	};
 
 	return (
@@ -104,7 +114,6 @@ function SubjectCard({ currentSubjectId }) {
 						</SubjectColor>
 					</SubjectTitle>
 					<ButtonBasic title="Редактировать" callback={onEditClick} />
-					<ButtonBasic title="Удалить" callback={onRemoveSubject} />
 				</SubjectHeader>
 				<SubjectDescription>{subject.description}</SubjectDescription>
 				<SubjectContainer>
@@ -114,27 +123,29 @@ function SubjectCard({ currentSubjectId }) {
 							color={subject.color}
 							progress={subject.totalSkill}
 						/>
-						{subject.skills.map((skill) => (
+						{Object.entries(subjectSkills).map((skill) => (
 							<SubjectSkill
-								key={skill.id}
-								name={skill.name}
-								color={skill.color}
-								progress={skill.progress}
+								key={skill[0]}
+								name={skill[1].name.length ? skill[1].name : "Без названия"}
+								color={skill[1].color}
+								progress={skill[1].progress}
 							/>
 						))}
 					</SubjectData>
 
-					<SubjectData
-						title={"Учебники и материалы"}
-						addAction={function () {}}
-					>
-						{subject.materials.map((material, index) =>
-							urlRegex.test(material) ? (
-								<SubjectMaterial as="a" key={index} href={material}>
-									{material}
+					<SubjectData title={"Учебники и материалы"} addAction={onMaterialAdd}>
+						{addNewMaterialActive === true ? (
+							<SubjectMaterialAdd onSave={onMaterialSave} />
+						) : null}
+						{Object.entries(subjectMaterials).map((material) =>
+							urlRegex.test(material[1]) ? (
+								<SubjectMaterial as="a" key={material[0]} href={material[1]}>
+									{material[1]}
 								</SubjectMaterial>
 							) : (
-								<SubjectMaterial key={index}>{material}</SubjectMaterial>
+								<SubjectMaterial key={material[0]}>
+									{material[1]}
+								</SubjectMaterial>
 							)
 						)}
 					</SubjectData>
@@ -144,39 +155,40 @@ function SubjectCard({ currentSubjectId }) {
 						addAction={onAddNewLesson}
 					>
 						{addNewLessonActive === false &&
-							subjectLessons.map((lesson) =>
-								lesson.status === "waiting" ? (
+							Object.entries(subjectLessons).map((lesson) =>
+								lesson[1].status === "waiting" ? (
 									<SubjectLesson
-										key={lesson.id}
-										name={lesson.topic}
-										lessonId={lesson.id}
-										skillsUsed={lesson.skills}
-										skills={subject.skills}
+										key={lesson[0]}
+										name={lesson[1].topic}
+										lessonId={lesson[0]}
+										skillsUsed={lesson[1].skills}
+										skills={subjectSkills}
 										onComplete={onLessonComplete}
 										onFail={onLessonFail}
-										time={new Date(lesson.time * 1000)}
+										time={new Date(lesson[1].time * 1000)}
 									/>
 								) : null
 							)}
-						{addNewLessonActive === true && currentLesson !== undefined ? (
+						{addNewLessonActive === true && currentLessonId !== -1 ? (
 							<SubjectLessonAdd
-								initData={currentLesson}
-								availableSkills={subject.skills}
+								subjectId={currentSubjectId}
+								lessonId={currentLessonId}
+								availableSkills={subjectSkills}
 								onSave={onLessonSave}
 							/>
 						) : null}
 					</SubjectData>
 					<SubjectData title={"Прошлые занятия"} expand={false}>
 						{!addNewLessonActive &&
-							subjectLessons.map((lesson) =>
-								lesson.status === "completed" ? (
+							Object.entries(subjectLessons).map((lesson) =>
+								lesson[1].status === "completed" ? (
 									<SubjectLesson
-										key={lesson.id}
-										name={lesson.topic}
-										lessonId={lesson.id}
-										skillsUsed={lesson.skills}
-										skills={subject.skills}
-										time={new Date(lesson.time * 1000)}
+										key={lesson[0]}
+										name={lesson[1].topic}
+										lessonId={lesson[0]}
+										skillsUsed={lesson[1].skills}
+										skills={subjectSkills}
+										time={new Date(lesson[1].time * 1000)}
 									/>
 								) : null
 							)}

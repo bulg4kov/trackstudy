@@ -35,6 +35,7 @@ function SubjectSkillEdit({
 			<InputBasic
 				name={"Название навыка"}
 				value={skill.name}
+				placeholder={"Без названия"}
 				onChange={handleSkillNameChange}
 				type={"text"}
 				small

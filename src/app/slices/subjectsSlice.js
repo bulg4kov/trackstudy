@@ -1,74 +1,42 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getSubjects, setSubjects } from "../../utils/storage";
-import fakesubjects from "../fakedata/subjects.json";
-import { changeCurrentStatus, changeCurrentSubject } from "./appSlice";
+import { getSubjectsFromStorage } from "../../utils/storage";
+import { nanoid } from "nanoid";
 
-const subjectFromStorage = getSubjects();
-const initialState =
-	subjectFromStorage !== null ? subjectFromStorage : fakesubjects;
+const subjectFromStorage = getSubjectsFromStorage();
+// Начальное состояние, если localstorage пустой берём из JSON файла, иначе - из localstorage
+const initialState = subjectFromStorage !== null ? subjectFromStorage : {};
 
-function calculateNewTotalSkill(skills) {
+// Расчёт нового значения общего прогресса для предмета на основании его побочных навыков
+export function calculateNewTotalSkill(skills) {
+	if (Object.keys(skills).length < 1) {
+		return 0;
+	}
 	let res = 0;
-	skills.forEach((skill) => {
+	Object.values(skills).forEach((skill) => {
 		res += skill.progress;
 	});
-	return res / skills.length;
+	if (res === 0) {
+		return 0;
+	}
+	res = res / Object.keys(skills).length;
+	// Возвращает округление до сотых
+	return Math.round(res * 100) / 100;
 }
 
-export const editSubject = (subject) => (dispatch, getState) => {
-	dispatch(setSubject(subject));
-	setSubjects(getState().subjects);
-};
+export function generateSubjectId() {
+	return nanoid();
+}
 
-export const addSubjectSkillPointThunk =
-	(subjectId, skillIds) => (dispatch, getState) => {
-		dispatch(
-			addSubjectSkillPoint({
-				subjectId: subjectId,
-				skillIds: skillIds,
-			})
-		);
-		setSubjects(getState().subjects);
-	};
+export function generateLessonId() {
+	return nanoid();
+}
 
-export const addNewLesson = (subjectId, newLesson) => (dispatch, getState) => {
-	dispatch(
-		editLessons({
-			subjectId: subjectId,
-			newLesson: newLesson,
-		})
-	);
-	setSubjects(getState().subjects);
-};
+export function generateSkillId() {
+	return nanoid();
+}
 
-export const editSubjectLesson =
-	(subjectId, lesson) => (dispatch, getState) => {
-		dispatch(
-			editLesson({
-				subjectId: subjectId,
-				lesson: lesson,
-			})
-		);
-		setSubjects(getState().subjects);
-	};
-
-export const removeSubjectById = (subjectId) => (dispatch, getState) => {
-	dispatch(changeCurrentStatus("LIST"));
-	dispatch(changeCurrentSubject(-1));
-	dispatch(removeSubject({ id: subjectId }));
-	setSubjects(getState().subjects);
-};
-
-export const addSubjectThunk = () => (dispatch, getState) => {
-	const newSubjectId = getState().subjects.length + 1;
-	dispatch(addSubject(newSubjectId));
-	dispatch(changeCurrentStatus("edit"));
-	dispatch(changeCurrentSubject(newSubjectId));
-	setSubjects(getState().subjects);
-};
-
-function getSubjectIndex(subjects, id) {
-	return subjects.findIndex((subject) => subject.id === id);
+export function generateMaterialId() {
+	return nanoid();
 }
 
 const subjectsSlice = createSlice({
@@ -78,56 +46,94 @@ const subjectsSlice = createSlice({
 		setSubject(state, action) {
 			const payload = action.payload;
 			const subjectId = payload.id;
-			const currentSubject = state[getSubjectIndex(state, subjectId)];
-			currentSubject.totalSkill = calculateNewTotalSkill(currentSubject.skills);
-			state[getSubjectIndex(state, subjectId)] = payload;
+			const newSubject = payload.data;
+			state[subjectId] = newSubject;
+			state[subjectId].totalSkill = calculateNewTotalSkill(
+				state[subjectId].skills
+			);
 		},
 		removeSubject(state, action) {
 			const payload = action.payload;
 			const subjectId = payload.id;
-			return state.filter((subject) => subject.id !== subjectId);
+			delete state[subjectId];
 		},
 		addSubject(state, action) {
 			const newSubjectId = action.payload;
 			const newSubject = {
-				id: newSubjectId,
 				name: "Мой предмет",
 				description: "",
 				color: "orange",
 				totalSkill: 0,
-				lessons: [],
-				skills: [],
-				materials: [],
+				lessons: {},
+				skills: {},
+				materials: {},
 			};
-			state.push(newSubject);
+			state[newSubjectId] = newSubject;
+		},
+		addSubjectSkill(state, action) {
+			const payload = action.payload;
+			const skillId = action.payload.skillId;
+			const subjectId = action.payload.subjectId;
+			const skill = {
+				color: "orange",
+				name: "",
+				progress: 0,
+			};
+			state[subjectId].skills[skillId] = skill;
 		},
 		addSubjectSkillPoint(state, action) {
 			const payload = action.payload;
 			const subjectId = payload.subjectId;
-			const skillIds = payload.skillIds;
-			const currentSubject = state[getSubjectIndex(state, subjectId)];
-			const skills = currentSubject.skills;
-			skills.forEach((skill) => {
-				if (skillIds.includes(skill.id)) {
-					skill.progress++;
-				}
+			const lessonId = payload.lessonId;
+			const skills = state[subjectId].lessons[lessonId].skills;
+			skills.map((key) => {
+				state[subjectId].skills[key].progress += 1;
 			});
-			currentSubject.totalSkill = calculateNewTotalSkill(skills);
+			state[subjectId].totalSkill = calculateNewTotalSkill(
+				state[subjectId].skills
+			);
 		},
-		editLessons(state, action) {
+		addMaterial(state, action) {
+			const payload = action.payload;
+			const newMaterialId = payload.materialId;
+			const subjectId = payload.subjectId;
+			const newMaterial = payload.data;
+			state[subjectId].materials[newMaterialId] = newMaterial;
+		},
+		addLesson(state, action) {
 			const payload = action.payload;
 			const subjectId = payload.subjectId;
-			const newLesson = payload.newLesson;
-			state[getSubjectIndex(state, subjectId)].lessons.push(newLesson);
+			const newLesson = payload.lesson;
+			const newLessonId = payload.lessonId;
+			state[subjectId].lessons[newLessonId] = newLesson;
 		},
 		editLesson(state, action) {
 			const payload = action.payload;
 			const subjectId = payload.subjectId;
 			const newLesson = payload.lesson;
-			const lessonIndex = state[
-				getSubjectIndex(state, subjectId)
-			].lessons.findIndex((lesson) => lesson.id == newLesson.id);
-			state[getSubjectIndex(state, subjectId)].lessons[lessonIndex] = newLesson;
+			const lessonId = payload.lessonId;
+			state[subjectId].lessons[lessonId] = newLesson;
+		},
+		setLessonStatus(state, action) {
+			const payload = action.payload;
+			const subjectId = payload.subjectId;
+			const lessonId = payload.lessonId;
+			const newStatus = payload.status;
+			state[subjectId].lessons[lessonId].status = newStatus;
+		},
+		editSkill(state, action) {
+			const payload = action.payload;
+			const subjectId = payload.subjectId;
+			const skillId = payload.skillId;
+			let skillData = payload.skillData;
+			const skillType = payload.skillType;
+			state[subjectId].skills[skillId][skillType] = skillData;
+		},
+		removeSkill(state, action) {
+			const payload = action.payload;
+			const subjectId = payload.subjectId;
+			const skillId = payload.skillId;
+			delete state[subjectId].skills[skillId];
 		},
 	},
 });
@@ -136,10 +142,15 @@ export const {
 	setSubject,
 	setSubjectSkills,
 	addSubjectSkillPoint,
-	editLessons,
+	addLesson,
 	editLesson,
+	setLessonStatus,
 	removeSubject,
 	addSubject,
+	addSubjectSkill,
+	addMaterial,
+	editSkill,
+	removeSkill,
 } = subjectsSlice.actions;
 
 export default subjectsSlice.reducer;

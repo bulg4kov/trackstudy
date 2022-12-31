@@ -2,10 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import Subject from "./Subject";
-import {
-	changeCurrentStatus,
-	changeCurrentSubject,
-} from "../../app/slices/appSlice";
+import { setCurrentStatus, setCurrentSubject } from "../../app/slices/appSlice";
 import SubjectActions from "./SubjectActions";
 import { getAllSubjectsIds } from "../../app/selectors/subjectsSelectors";
 
@@ -23,13 +20,13 @@ const SubjectsList = styled.div`
 `;
 
 function Subjects() {
-	const subjectsIds = useSelector((state) => getAllSubjectsIds(state));
+	const subjectsIds = useSelector(getAllSubjectsIds);
 
 	const dispatch = useDispatch();
 
 	const onSubjectClick = (e, subjectId) => {
-		dispatch(changeCurrentSubject(subjectId));
-		dispatch(changeCurrentStatus("view"));
+		dispatch(setCurrentSubject(subjectId));
+		dispatch(setCurrentStatus("view"));
 	};
 
 	if (subjectsIds.length < 1) {

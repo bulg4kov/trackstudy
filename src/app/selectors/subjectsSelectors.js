@@ -1,20 +1,21 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-export const selectSubjectById = createSelector(
-	(state) => state.subjects,
-	(state, id) => id,
+// Получение предмета по его ID
+export const getSubjectById = createSelector(
+	[(state) => state.subjects, (state, id) => id],
 	(subjects, id) => {
-		return subjects.filter((subject) => subject.id == id)[0];
+		return subjects[id];
 	}
-	// (subjects, id) => subjects.find((subject) => subject.id === id)
 );
 
+// Получение всех ID всех предметов
 export const getAllSubjectsIds = createSelector(
 	(state) => state.subjects,
-	(subjects) => subjects.map((subject) => subject.id)
+	(subjects) => Object.keys(subjects)
 );
 
-function compareLessonsDate(a, b) {
+// Сравнение времени занятия для сортировка
+function compareLessonsTime(a, b) {
 	if (a.time < b.time) {
 		return -1;
 	}
@@ -24,16 +25,26 @@ function compareLessonsDate(a, b) {
 	return 0;
 }
 
+// Получение всех занятий для предмета по ID, на выходе отсорированный массив через сравнение compareLessonsDate
 export const getLessonsForSubject = createSelector(
+	[(state, subjectId) => state.subjects[subjectId]],
+	(subject) => subject.lessons
+);
+
+export const getLessonById = createSelector(
 	[
-		(state, subjectId) =>
-			state.subjects.find((subject) => subject.id == subjectId),
+		(state, subjectId) => state.subjects[subjectId].lessons,
+		(state, subjectId, lessonsId) => lessonsId,
 	],
-	(subject, subjectId) => {
-		if (subject !== undefined) {
-			return JSON.parse(JSON.stringify(subject.lessons)).sort(
-				compareLessonsDate
-			);
-		}
-	}
+	(lessons, lessonId) => lessons[lessonId]
+);
+
+export const getMaterialsForSubject = createSelector(
+	[(state, subjectId) => state.subjects[subjectId]],
+	(subject) => subject.materials
+);
+
+export const getSkillsForSubject = createSelector(
+	[(state, subjectId) => state.subjects[subjectId]],
+	(subject) => subject.skills
 );

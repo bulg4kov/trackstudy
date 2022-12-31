@@ -1,9 +1,9 @@
 const storage = window.localStorage;
 
-export function getSubjects() {
+export function getSubjectsFromStorage() {
 	return JSON.parse(storage.getItem("subjects"));
 }
 
-export function setSubjects(subjects) {
+export function setSubjectsInStorage(subjects) {
 	storage.setItem("subjects", JSON.stringify(subjects));
 }

@@ -11,33 +11,42 @@ import SubjectData from "./SubjectData";
 import SelectBasic from "../UI/Selects/SelectBasic";
 import { colorsList } from "../../utils/colorsList";
 import SubjectSkillEdit from "./SubjectSkillEdit";
-import { editSubject } from "../../app/slices/subjectsSlice";
-import { useDispatch } from "react-redux";
-import { changeCurrentStatus } from "../../app/slices/appSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentStatus } from "../../app/slices/appSlice";
 import { useSubject } from "../../hooks/useSubject";
+import { getSkillsForSubject } from "../../app/selectors/subjectsSelectors";
+import {
+	addSubjectSkillThunk,
+	editSubjectSkillThunk,
+	editSubjectThunk,
+	removeSubjectSkillThunk,
+	removeSubjectThunk,
+} from "../../app/slices/subjectsThunks";
 
 function SubjectCardEdit({ currentSubjectId }) {
 	const subject = useSubject(currentSubjectId);
+	const subjectSkills = useSelector((state) =>
+		getSkillsForSubject(state, currentSubjectId)
+	);
 
 	const [nameValue, setNameValue] = useState(subject.name);
 	const [colorValue, setColorValue] = useState(subject.color);
 	const [descValue, setDescValue] = useState(subject.description);
-	const [skills, setSkills] = useState(subject.skills);
+	const [skills, setSkills] = useState(subjectSkills);
 
 	const dispatch = useDispatch();
 
 	const onSave = (e) => {
 		dispatch(
-			editSubject({
+			editSubjectThunk(currentSubjectId, {
 				...subject,
-				id: subject.id,
 				name: nameValue,
 				color: colorValue,
 				description: descValue,
 				skills: skills,
 			})
 		);
-		dispatch(changeCurrentStatus("view"));
+		dispatch(setCurrentStatus("view"));
 	};
 
 	const onNameChange = (e) => {
@@ -53,31 +62,23 @@ function SubjectCardEdit({ currentSubjectId }) {
 	};
 
 	const onSkillAdd = (e) => {
-		const newSkill = {
-			color: "orange",
-			id: skills.length + 1,
-			name: "Название навыка",
-			progress: 0,
-		};
-		setSkills((skills) => [...skills, newSkill]);
+		dispatch(addSubjectSkillThunk(currentSubjectId));
 	};
 
 	const onSkillEditName = (name, id) => {
-		const editedSkill = skills.findIndex((skill) => skill.id === id);
-		const newSkills = JSON.parse(JSON.stringify([...skills]));
-		newSkills[editedSkill].name = name;
-		setSkills(newSkills);
+		dispatch(editSubjectSkillThunk(currentSubjectId, id, "name", name));
 	};
 
 	const onSkillEditColor = (color, id) => {
-		const editedSkill = skills.findIndex((skill) => skill.id === id);
-		const newSkills = JSON.parse(JSON.stringify([...skills]));
-		newSkills[editedSkill].color = color;
-		setSkills(newSkills);
+		dispatch(editSubjectSkillThunk(currentSubjectId, id, "color", color));
 	};
 
 	const onSkillRemove = (id) => {
-		setSkills(skills.filter((skill) => skill.id !== id));
+		dispatch(removeSubjectSkillThunk(currentSubjectId, id));
+	};
+
+	const onRemoveSubject = () => {
+		dispatch(removeSubjectThunk(currentSubjectId));
 	};
 
 	useEffect(() => {
@@ -105,6 +106,7 @@ function SubjectCardEdit({ currentSubjectId }) {
 						/>
 					</SubjectTitle>
 					<ButtonBasic title="Сохранить" callback={onSave} />
+					<ButtonBasic title="Удалить" callback={onRemoveSubject} />
 				</SubjectHeader>
 				<InputBasic
 					type={"text"}
@@ -115,11 +117,11 @@ function SubjectCardEdit({ currentSubjectId }) {
 				/>
 				<SubjectContainer>
 					<SubjectData title={"Мои навыки"} addAction={onSkillAdd}>
-						{skills.map((skill) => (
+						{Object.entries(subjectSkills).map((skill) => (
 							<SubjectSkillEdit
-								key={skill.id}
-								id={skill.id}
-								skill={skill}
+								key={skill[0]}
+								id={skill[0]}
+								skill={skill[1]}
 								onChangeName={onSkillEditName}
 								onChangeColor={onSkillEditColor}
 								onRemove={onSkillRemove}
