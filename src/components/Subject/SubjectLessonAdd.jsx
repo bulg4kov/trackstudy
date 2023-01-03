@@ -23,6 +23,18 @@ const StyledDivFlex = styled.div`
 	gap: 16px;
 `
 
+function padTo2Digits(num) {
+	return num.toString().padStart(2, "0")
+}
+
+function formatDate(date) {
+	return [
+		date.getFullYear(),
+		padTo2Digits(date.getMonth() + 1),
+		padTo2Digits(date.getDate()),
+	].join("-")
+}
+
 function SubjectLessonAdd({
 	subjectId,
 	lessonId,
@@ -37,7 +49,7 @@ function SubjectLessonAdd({
 	// Установка состояния начальной даты
 	const [date, setDate] = useState(() => {
 		const date = new Date(currentLesson.time * 1000)
-		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+		return formatDate(date)
 	})
 
 	// Установка состояния навыков для занятия
@@ -53,8 +65,9 @@ function SubjectLessonAdd({
 		const newDate = e.target.value
 		const newDateObject = new Date(newDate)
 		const currDate = new Date()
-		const newDateSplited = newDate.split("-")
+		currDate.setDate(currDate.getDate() - 1)
 		if (newDateObject < currDate) {
+			setDate(new Date())
 			return
 		}
 		setDate(newDate)
@@ -120,7 +133,7 @@ function SubjectLessonAdd({
 						<StyledDivFlex key={skill}>
 							{
 								Object.entries(availableSkills).find(avSkill => {
-									return avSkill[0] == skill
+									return avSkill[0] === skill
 								})[1].name
 							}
 							<SubjectSubAction
