@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { SubjectSubAction } from "./SubjectSubAction";
+import React from "react"
+import styled from "styled-components"
+import { SubjectSubAction } from "./SubjectSubAction"
 
 const StyledLesson = styled.div`
 	display: flex;
@@ -8,32 +8,32 @@ const StyledLesson = styled.div`
 	gap: 16px;
 	width: 200px;
 	padding: 16px;
-	background-color: ${(props) => props.theme.grayBg};
-	color: ${(props) => props.theme.textGray};
+	background-color: ${props => props.theme.grayBg};
+	color: ${props => props.theme.textGray};
 	font-size: 16px;
 	font-weight: 400;
 	border-radius: 16px;
-`;
+`
 
 const LessonHeader = styled.div`
 	display: flex;
 	justify-content: space-between;
-`;
+`
 
 const LessonActions = styled.div`
 	display: flex;
 	gap: 16px;
-`;
+`
 
 const LessonTopic = styled.span`
 	font-size: 16px;
-	color: ${(props) => props.theme.textPrimary};
-`;
+	color: ${props => props.theme.textPrimary};
+`
 
 const LessonSkill = styled.span`
-	border-bottom: 1px solid ${(props) => props.theme.cardPrimary[props.color]};
+	border-bottom: 1px solid ${props => props.theme.cardPrimary[props.color]};
 	width: fit-content;
-`;
+`
 
 function SubjectLesson({
 	lessonId = undefined,
@@ -56,7 +56,7 @@ function SubjectLesson({
 					{onComplete !== undefined ? (
 						<SubjectSubAction
 							type="complete"
-							onClick={(e) => onComplete(lessonId)}
+							onClick={e => onComplete(lessonId)}
 							title="Занятие прошло успешно"
 						>
 							+
@@ -65,7 +65,7 @@ function SubjectLesson({
 					{onFail !== undefined ? (
 						<SubjectSubAction
 							type="fail"
-							onClick={(e) => onFail(lessonId)}
+							onClick={e => onFail(lessonId)}
 							title="Занятие не состоялось"
 						>
 							-
@@ -74,7 +74,7 @@ function SubjectLesson({
 				</LessonActions>
 			</LessonHeader>
 			<LessonTopic>{name}</LessonTopic>
-			{skillsUsed.map((skillUsed) =>
+			{skillsUsed.map(skillUsed =>
 				Object.keys(skills).includes(skillUsed) > 0 ? (
 					<LessonSkill key={skillUsed} color={skills[skillUsed].color}>
 						{skills[skillUsed].name}
@@ -82,7 +82,7 @@ function SubjectLesson({
 				) : null
 			)}
 		</StyledLesson>
-	);
+	)
 }
 
-export default SubjectLesson;
+export default SubjectLesson

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const SubjectSubAction = styled.button`
 	font-size: 16px;
@@ -11,8 +11,8 @@ export const SubjectSubAction = styled.button`
 	border-radius: 50px;
 	border: none;
 	cursor: pointer;
-	color: ${(props) =>
+	color: ${props =>
 		props.type === "complete"
 			? props.theme.cardPrimary.green
 			: props.theme.cardPrimary.red};
-`;
+`

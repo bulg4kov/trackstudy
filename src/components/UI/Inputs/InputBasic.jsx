@@ -1,22 +1,22 @@
-import React from "react";
-import styled from "styled-components";
+import React from "react"
+import styled from "styled-components"
 
 const StyledInput = styled.input`
 	padding: 8px 16px;
-	font-size: ${(props) => (props.small ? "14px" : "20px")};
+	font-size: ${props => (props.small ? "14px" : "20px")};
 	border-radius: 16px;
 	border: none;
-	background-color: ${(props) => props.theme.grayBg};
+	background-color: ${props => props.theme.grayBg};
 	text-overflow: ellipsis;
-`;
+`
 
 const StyledLabel = styled.label`
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
 	font-size: 12px;
-	color: ${(props) => props.theme.textGray};
-`;
+	color: ${props => props.theme.textGray};
+`
 
 function InputBasic({
 	value,
@@ -37,7 +37,7 @@ function InputBasic({
 				onChange={onChange}
 			/>
 		</StyledLabel>
-	);
+	)
 }
 
-export default InputBasic;
+export default InputBasic

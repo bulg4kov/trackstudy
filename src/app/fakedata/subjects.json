@@ -1,134 +1,134 @@
 [
-  {
-    "id": 0,
-    "name": "ReactJS",
-    "description": "Изучение фреймворка для JavaScript - ReactJS 16+ версии с хуками, функциональные компоненты",
-    "color": "orange",
-    "totalSkill": 67,
-    "lessons": [
-      {
-        "id": 0,
-        "time": 1632101138,
-        "topic": "useContext",
-        "status": "waiting",
-        "skills": [0, 1]
-      },
-      {
-        "id": 4,
-        "time": 1642101138,
-        "topic": "useContext",
-        "status": "waiting",
-        "skills": [0, 1]
-      },
-      {
-        "id": 1,
-        "time": 1670151138,
-        "topic": "useState",
-        "status": "completed",
-        "skills": [0, 1]
-      },
-      {
-        "id": 2,
-        "time": 1670051138,
-        "topic": "useEffect",
-        "status": "failed",
-        "skills": [0, 1]
-      }
-    ],
-    "skills": [
-      {
-        "id": 0,
-        "name": "Теоретическая база",
-        "color": "green",
-        "progress": 90
-      },
-      {
-        "id": 1,
-        "name": "Практика",
-        "color": "blue",
-        "progress": 50
-      },
-      {
-        "id": 2,
-        "name": "Библиотеки",
-        "color": "red",
-        "progress": 22
-      }
-    ],
-    "materials": ["https://beta.reactjs.org/", "Redux Docs"]
-  },
-  {
-    "id": 1,
-    "name": "vue.js",
-    "description": "Изучение фреймворка для JavaScript - vue.js",
-    "color": "green",
-    "totalSkill": 10,
-    "lessons": [
-      {
-        "id": 0,
-        "time": 1672101138,
-        "topic": "Начало чтения документации vue.js",
-        "status": "waiting",
-        "skills": [0, 2]
-      }
-    ],
-    "skills": [
-      {
-        "id": 0,
-        "name": "Теоретическая база",
-        "color": "blue",
-        "progress": 10
-      },
-      {
-        "id": 1,
-        "name": "Практика",
-        "color": "red",
-        "progress": 5
-      },
-      {
-        "id": 2,
-        "name": "Библиотеки",
-        "color": "green",
-        "progress": 0
-      }
-    ],
-    "materials": ["https://ru.vuejs.org/index.html"]
-  },
-  {
-    "id": 3,
-    "name": "vue.js",
-    "description": "Изучение фреймворка для JavaScript - vue.js",
-    "color": "green",
-    "totalSkill": 10,
-    "lessons": [
-      {
-        "id": 0,
-        "time": 1672101138,
-        "topic": "Начало чтения документации vue.js",
-        "status": "waiting",
-        "skills": [0, 2]
-      }
-    ],
-    "skills": [
-      {
-        "id": 0,
-        "name": "Теоретическая база",
-        "color": "blue",
-        "progress": 10
-      },
-      {
-        "id": 1,
-        "name": "Практика",
-        "color": "red",
-        "progress": 5
-      },
-      {
-        "id": 2,
-        "name": "Библиотеки",
-        "color": "green",
-        "progress": 0
-      }
-    ],
-    "materials": ["https://ru.vuejs.org/index.html"]
-  }
+	{
+		"id": 0,
+		"name": "ReactJS",
+		"description": "Изучение фреймворка для JavaScript - ReactJS 16+ версии с хуками, функциональные компоненты",
+		"color": "orange",
+		"totalSkill": 67,
+		"lessons": [
+			{
+				"id": 0,
+				"time": 1632101138,
+				"topic": "useContext",
+				"status": "waiting",
+				"skills": [0, 1]
+			},
+			{
+				"id": 4,
+				"time": 1642101138,
+				"topic": "useContext",
+				"status": "waiting",
+				"skills": [0, 1]
+			},
+			{
+				"id": 1,
+				"time": 1670151138,
+				"topic": "useState",
+				"status": "completed",
+				"skills": [0, 1]
+			},
+			{
+				"id": 2,
+				"time": 1670051138,
+				"topic": "useEffect",
+				"status": "failed",
+				"skills": [0, 1]
+			}
+		],
+		"skills": [
+			{
+				"id": 0,
+				"name": "Теоретическая база",
+				"color": "green",
+				"progress": 90
+			},
+			{
+				"id": 1,
+				"name": "Практика",
+				"color": "blue",
+				"progress": 50
+			},
+			{
+				"id": 2,
+				"name": "Библиотеки",
+				"color": "red",
+				"progress": 22
+			}
+		],
+		"materials": ["https://beta.reactjs.org/", "Redux Docs"]
+	},
+	{
+		"id": 1,
+		"name": "vue.js",
+		"description": "Изучение фреймворка для JavaScript - vue.js",
+		"color": "green",
+		"totalSkill": 10,
+		"lessons": [
+			{
+				"id": 0,
+				"time": 1672101138,
+				"topic": "Начало чтения документации vue.js",
+				"status": "waiting",
+				"skills": [0, 2]
+			}
+		],
+		"skills": [
+			{
+				"id": 0,
+				"name": "Теоретическая база",
+				"color": "blue",
+				"progress": 10
+			},
+			{
+				"id": 1,
+				"name": "Практика",
+				"color": "red",
+				"progress": 5
+			},
+			{
+				"id": 2,
+				"name": "Библиотеки",
+				"color": "green",
+				"progress": 0
+			}
+		],
+		"materials": ["https://ru.vuejs.org/index.html"]
+	},
+	{
+		"id": 3,
+		"name": "vue.js",
+		"description": "Изучение фреймворка для JavaScript - vue.js",
+		"color": "green",
+		"totalSkill": 10,
+		"lessons": [
+			{
+				"id": 0,
+				"time": 1672101138,
+				"topic": "Начало чтения документации vue.js",
+				"status": "waiting",
+				"skills": [0, 2]
+			}
+		],
+		"skills": [
+			{
+				"id": 0,
+				"name": "Теоретическая база",
+				"color": "blue",
+				"progress": 10
+			},
+			{
+				"id": 1,
+				"name": "Практика",
+				"color": "red",
+				"progress": 5
+			},
+			{
+				"id": 2,
+				"name": "Библиотеки",
+				"color": "green",
+				"progress": 0
+			}
+		],
+		"materials": ["https://ru.vuejs.org/index.html"]
+	}
 ]

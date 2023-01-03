@@ -1,13 +1,13 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import { Provider } from "react-redux";
-import { store } from "./app/store";
-import App from "./App";
-import "./index.css";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import React from "react"
+import { createRoot } from "react-dom/client"
+import { Provider } from "react-redux"
+import { store } from "./app/store"
+import App from "./App"
+import "./index.css"
+import { createGlobalStyle, ThemeProvider } from "styled-components"
 
-const container = document.getElementById("root");
-const root = createRoot(container);
+const container = document.getElementById("root")
+const root = createRoot(container)
 
 const GlobalStyle = createGlobalStyle`
 	*{
@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
 		box-sizing: border-box;
 		margin: 0 auto
 	}
-`;
+`
 
 const Theme = {
 	textPrimary: "#000",
@@ -52,7 +52,7 @@ const Theme = {
 		blue: "#72AEC1",
 		red: "#FFB1B1",
 	},
-};
+}
 
 root.render(
 	<React.StrictMode>
@@ -63,4 +63,4 @@ root.render(
 			</ThemeProvider>
 		</Provider>
 	</React.StrictMode>
-);
+)

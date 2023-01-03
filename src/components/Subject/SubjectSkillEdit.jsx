@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import { colorsList } from "../../utils/colorsList";
-import SelectBasic from "../UI/Selects/SelectBasic";
-import InputBasic from "../UI/Inputs/InputBasic";
-import { SubjectSubAction } from "./SubjectSubAction";
+import React from "react"
+import styled from "styled-components"
+import { colorsList } from "../../utils/colorsList"
+import SelectBasic from "../UI/Selects/SelectBasic"
+import InputBasic from "../UI/Inputs/InputBasic"
+import { SubjectSubAction } from "./SubjectSubAction"
 
 export const SkillEditable = styled.div`
 	display: flex;
@@ -13,7 +13,7 @@ export const SkillEditable = styled.div`
 	padding: 16px;
 	align-items: flex-start;
 	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-`;
+`
 function SubjectSkillEdit({
 	id,
 	skill,
@@ -22,13 +22,13 @@ function SubjectSkillEdit({
 	onRemove,
 	...props
 }) {
-	const handleSkillNameChange = (e) => {
-		onChangeName(e.target.value, id);
-	};
+	const handleSkillNameChange = e => {
+		onChangeName(e.target.value, id)
+	}
 
-	const handleSkillColorChange = (e) => {
-		onChangeColor(e.target.value, id);
-	};
+	const handleSkillColorChange = e => {
+		onChangeColor(e.target.value, id)
+	}
 
 	return (
 		<SkillEditable>
@@ -45,11 +45,11 @@ function SubjectSkillEdit({
 				onChange={handleSkillColorChange}
 				value={skill.color}
 			/>
-			<SubjectSubAction type="fail" onClick={(e) => onRemove(id)}>
+			<SubjectSubAction type="fail" onClick={e => onRemove(id)}>
 				Удалить
 			</SubjectSubAction>
 		</SkillEditable>
-	);
+	)
 }
 
-export default SubjectSkillEdit;
+export default SubjectSkillEdit
