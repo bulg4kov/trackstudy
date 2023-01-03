@@ -86,7 +86,11 @@ function SubjectCardEdit({ currentSubjectId }) {
 		setColorValue(subject.color)
 		setDescValue(subject.description)
 		setSkills(subject.skills)
-	}, [subject])
+	}, [currentSubjectId])
+
+	useEffect(() => {
+		setSkills(subject.skills)
+	}, [subject.skills])
 
 	return (
 		<section>
